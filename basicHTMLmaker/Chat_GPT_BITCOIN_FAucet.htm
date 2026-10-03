@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitcoin Faucet</title>
+</head>
+<body>
+<h1>Welcome to Our Bitcoin Faucet!</h1>
+<p>Get free Bitcoin by completing simple tasks!</p>
+<p>Click the button below to claim your reward:</p>
+<button id="claimButton">Claim Bitcoin</button>
+<p>Your Bitcoin address:</p>
+<input type="text" id="bitcoinAddress" placeholder="Enter your Bitcoin address">
+<p id="statusMessage"></p>
+
+<script>
+// Simulated faucet balance
+let faucetBalance = 1000; // Initial balance in satoshis
+
+// Function to claim Bitcoin
+function claimBitcoin() {
+    const bitcoinAddress = document.getElementById("bitcoinAddress").value.trim();
+    if (!bitcoinAddress) {
+        document.getElementById("statusMessage").textContent = "Please enter your Bitcoin address.";
+        return;
+    }
+
+    // Simulated reward amount (random between 100 and 1000 satoshis)
+    const rewardAmount = Math.floor(Math.random() * (1000 - 100 + 1)) + 100;
+
+    if (faucetBalance < rewardAmount) {
+        document.getElementById("statusMessage").textContent = "Sorry, the faucet is empty. Please try again later.";
+        return;
+    }
+
+    // Deduct reward amount from faucet balance
+    faucetBalance -= rewardAmount;
+
+    // Simulated delay before rewarding
+    setTimeout(() => {
+        document.getElementById("statusMessage").textContent = `Congratulations! ${rewardAmount} satoshis sent to ${bitcoinAddress}.`;
+    }, 2000);
+}
+
+// Event listener for claim button
+document.getElementById("claimButton").addEventListener("click", claimBitcoin);
+</script>
+</body>
+</html>
+

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Hex to File Converter</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+    textarea {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 10px;
+        font-family: monospace;
+        font-size: 14px;
+        padding: 10px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<h2>Hex to File Converter</h2>
+
+<textarea id="hexInput" placeholder="Enter hexadecimal data here..." spellcheck="false"></textarea>
+<button onclick="convertHexToFile()">Convert to File</button>
+
+<script>
+function convertHexToFile() {
+    var hexInput = document.getElementById('hexInput').value.trim();
+    
+    // Remove any spaces or newlines from the input (assuming input is space-separated or continuous hex)
+    hexInput = hexInput.replace(/\s+/g, '');
+
+    // Validate hexadecimal input (optional step)
+    if (!/^[0-9A-Fa-f]*$/.test(hexInput)) {
+        alert('Invalid hexadecimal input. Please enter valid hex characters (0-9, A-F, a-f).');
+        return;
+    }
+
+    // Convert hexadecimal string to bytes
+    var bytes = [];
+    for (var i = 0; i < hexInput.length; i += 2) {
+        bytes.push(parseInt(hexInput.substr(i, 2), 16));
+    }
+
+    // Convert bytes array to ArrayBuffer
+    var arrayBuffer = new Uint8Array(bytes).buffer;
+
+    // Create Blob from ArrayBuffer
+    var blob = new Blob([arrayBuffer]);
+
+    // Create a download link
+    var downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = 'hex_file.bin'; // Default file name
+    downloadLink.click();
+}
+</script>
+
+</body>
+</html>

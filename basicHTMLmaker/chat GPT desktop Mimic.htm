@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows Desktop Mimic</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .taskbar {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      background-color: #1e1e1e;
+    }
+
+    .start-menu {
+      position: relative;
+      display: inline-block;
+    }
+
+    .start-button {
+      width: 40px;
+      height: 40px;
+      background-color: transparent;
+      border: none;
+      outline: none;
+    }
+
+    .start-menu-content {
+      display: none;
+      position: absolute;
+      bottom: 40px;
+      background-color: #fff;
+      min-width: 160px;
+      padding: 8px;
+    }
+
+    .start-menu-content ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .start-menu-content li {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .start-menu:hover .start-menu-content {
+      display: block;
+    }
+
+    .desktop-icons {
+      position: absolute;
+      top: 50px;
+      left: 50px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      grid-gap: 20px;
+    }
+
+    .icon {
+      text-align: center;
+    }
+
+    .icon img {
+      width: 80px;
+      height: 80px;
+    }
+
+    .icon span {
+      display: block;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="taskbar">
+    <div class="start-menu">
+      <button class="start-button"></button>
+      <div class="start-menu-content">
+        <ul>
+          <li>Program 1</li>
+          <li>Program 2</li>
+          <li>Program 3</li>
+          <!-- Add more programs here -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="desktop-icons">
+    <div class="icon">
+      <img src="folder-icon.png" alt="Folder">
+      <span>Folder</span>
+    </div>
+    <div class="icon">
+      <img src="document-icon.png" alt="Document">
+      <span>Document</span>
+    </div>
+    <!-- Add more icons here -->
+  </div>
+
+  <script>
+    // You can add JavaScript code here for additional functionality
+  </script>
+</body>
+</html>
+

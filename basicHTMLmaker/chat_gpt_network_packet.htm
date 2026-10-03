@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Network Packets</title>
+</head>
+<body>
+    <h1>Send Network Packets</h1>
+    <label for="input">Enter your input:</label><br>
+    <input type="text" id="input"><br>
+    <button onclick="sendPacket('GET')">Send GET Request</button>
+    <button onclick="sendPacket('POST')">Send POST Request</button>
+    <div id="output"></div>
+
+    <script>
+        function sendPacket(method) {
+            var input = document.getElementById("input").value;
+            var url = 'https://example.com'; // Replace with your desired URL
+
+            var requestOptions = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            if (method === 'POST') {
+                requestOptions.body = JSON.stringify({ input: input });
+            } else {
+                url += '?input=' + encodeURIComponent(input);
+            }
+
+            fetch(url, requestOptions)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("output").innerText = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+</html>
+

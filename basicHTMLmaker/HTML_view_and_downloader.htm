@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Code Viewer and Downloader</title>
+</head>
+<body>
+    <h1>HTML Code Viewer and Downloader</h1>
+    <p>This webpage allows you to view the HTML code of the page and download it.</p>
+    <button onclick="downloadHtml()">Download HTML</button>
+    <pre id="htmlCode"></pre>
+
+    <script>
+        function downloadHtml() {
+            var htmlContent = document.documentElement.outerHTML; // Get the entire HTML content of the page
+            var blob = new Blob([htmlContent], { type: 'text/html' }); // Create a Blob containing the HTML content
+            var url = URL.createObjectURL(blob); // Create a URL for the Blob
+            var link = document.createElement('a'); // Create a link element
+            link.href = url; // Set the link's href attribute to the URL of the Blob
+            link.download = 'webpage.html'; // Set the download attribute to specify the filename
+            link.click(); // Programmatically trigger the click event of the link
+            URL.revokeObjectURL(url); // Revoke the URL to release resources
+        }
+
+        // Display HTML code on the page
+        document.getElementById('htmlCode').innerText = document.documentElement.outerHTML;
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulated Windows Desktop</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #a0a0a0;
+    }
+    .desktop {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('desktop_background.jpg'); /* Change the URL to your desired background image */
+        background-size: cover;
+    }
+    .taskbar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background-color: #1a1a1a;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+    }
+    .taskbar .start-button {
+        width: 40px;
+        height: 100%;
+        background-color: #4CAF50;
+        border: none;
+        cursor: pointer;
+    }
+    .taskbar .start-button:hover {
+        background-color: #45a049;
+    }
+    .icons {
+        position: absolute;
+        top: 100px;
+        left: 50px;
+        display: grid;
+        grid-template-columns: repeat(4, 100px);
+        gap: 20px;
+    }
+    .icon {
+        width: 100px;
+        text-align: center;
+    }
+    .icon img {
+        width: 80px;
+        height: auto;
+    }
+    .icon p {
+        margin: 0;
+        color: #ffffff;
+    }
+</style>
+</head>
+<body>
+<div class="desktop">
+    <div class="taskbar">
+        <button class="start-button"></button>
+    </div>
+    <div class="icons">
+        <div class="icon">
+            <img src="folder_icon.png" alt="Folder">
+            <p>Folder</p>
+        </div>
+        <div class="icon">
+            <img src="file_icon.png" alt="File">
+            <p>File</p>
+        </div>
+        <!-- Add more icons as needed -->
+    </div>
+</div>
+</body>
+</html>
+

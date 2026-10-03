@@ -1,0 +1,72 @@
+"InstallScript"
+{
+	"Registry"
+	{
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\LucasArts Entertainment Company\\JediKnight\\1.0"
+		{
+			"string"
+			{
+				"Analyze Path"		"%INSTALLDIR%\\Install\\SysCheck.exe"
+				"CD Path"		"%INSTALLDIR%"
+				"executable"		"%INSTALLDIR%\\Jk.exe"
+				"Install Path"		"%INSTALLDIR%"
+				"Source Dir"		"%INSTALLDIR%\\"
+				"Source Path"		"%INSTALLDIR%"
+				"Sound File"		"%INSTALLDIR%\\Resource\\Res1hi.gob"
+			}
+			"dword"
+			{
+				"InstallType"		"9"
+				"bHighResGraphicsInstall"		"1"
+				"bLowRes"		"0"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\LucasArts Entertainment Company\\JediKnight\\v1.0"
+		{
+			"binary"
+			{
+				"viewSize"		"09000000"
+			}
+		}
+	}
+	"Registry If Not Present"
+	{
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\LucasArts Entertainment Company\\JediKnight\\v1.0"
+		{
+			"binary"
+			{
+				"bSysBackbuffer"		"01000000"
+			}
+		}
+	}
+	"Run Process"
+	{
+		"SetUpCompability"
+		{
+			"HasRunKey"		"HKEY_LOCAL_MACHINE\\Software\\Valve\\Steam\\Apps\\32380"
+			"Process 1"		"%INSTALLDIR%\\Install.bat"
+			"Command 1"		"/silent"
+		}
+		"DirectPlayEnable"
+		{
+			"Process 1"		"%INSTALLDIR%\\DirectPlayEnable.bat"
+			"Command 1"		"/silent"
+			"Requirement_OS"
+			{
+				"OSType"		"Windows 10"
+			}
+		}
+	}
+	"Run Process On Uninstall"
+	{
+		"Process_name"
+		{
+			"Process 1"		"%INSTALLDIR%\\removeRegistry.bat"
+			"Command 1"		"/silent"
+		}
+	}
+}
+"kvsignatures"
+{
+	"InstallScript"		"266d8a04701efa652d96cc7a2d11b8b490b04b87baf1e91bd3e24625e920af854c42266f4549ca5309c09b32cd0416fe1991c0fd7dd7c506a3925541ac69b9026da12c4dc0d2a5b839b093cc93ec9e87875c2387b861b565ae986572cc903d6f5455f2879de825cd5b7be79db6c1aee420a5c1533e1ded4037f3424330cafe72"
+}

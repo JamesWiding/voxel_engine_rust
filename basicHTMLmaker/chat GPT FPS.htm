@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basic FPS Game</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    canvas {
+        display: block;
+    }
+</style>
+</head>
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+// Get canvas context
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+// Player object
+const player = {
+    x: canvas.width / 2,
+    y: canvas.height / 2,
+    width: 20,
+    height: 20,
+    color: "#ff0000",
+    speed: 5,
+    dx: 0,
+    dy: 0,
+    update: function() {
+        this.x += this.dx;
+        this.y += this.dy;
+        // Bound player within canvas
+        if (this.x < 0) this.x = 0;
+        if (this.x + this.width > canvas.width) this.x = canvas.width - this.width;
+        if (this.y < 0) this.y = 0;
+        if (this.y + this.height > canvas.height) this.y = canvas.height - this.height;
+    },
+    draw: function() {
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+};
+
+// Update player movement based on key presses
+document.addEventListener("keydown", function(event) {
+    switch(event.key) {
+        case "ArrowUp":
+            player.dy = -player.speed;
+            break;
+        case "ArrowDown":
+            player.dy = player.speed;
+            break;
+        case "ArrowLeft":
+            player.dx = -player.speed;
+            break;
+        case "ArrowRight":
+            player.dx = player.speed;
+            break;
+    }
+});
+
+document.addEventListener("keyup", function(event) {
+    switch(event.key) {
+        case "ArrowUp":
+        case "ArrowDown":
+            player.dy = 0;
+            break;
+        case "ArrowLeft":
+        case "ArrowRight":
+            player.dx = 0;
+            break;
+    }
+});
+
+// Main game loop
+function gameLoop() {
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Update and draw player
+    player.update();
+    player.draw();
+    
+    // Request next frame
+    requestAnimationFrame(gameLoop);
+}
+
+// Start game loop
+gameLoop();
+</script>
+</body>
+</html>
+

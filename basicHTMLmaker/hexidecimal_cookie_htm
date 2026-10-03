@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Sender</title>
+</head>
+<body>
+    <h1>Cookie Sender</h1>
+    <label for="normalCookie">Enter value for normal cookie:</label><br>
+    <input type="text" id="normalCookieValue"><br>
+    <button onclick="sendNormalCookie()">Send Normal Cookie</button><br>
+
+    <label for="hexCookie">Enter value for hexadecimal cookie:</label><br>
+    <input type="text" id="hexCookieValue"><br>
+    <button onclick="sendHexCookie()">Send Hexadecimal Cookie</button><br>
+
+    <script>
+        function sendNormalCookie() {
+            var normalCookieValue = document.getElementById("normalCookieValue").value;
+            document.cookie = "normalCookie=" + encodeURIComponent(normalCookieValue);
+            alert("Normal cookie sent successfully.");
+        }
+
+        function sendHexCookie() {
+            var hexCookieValue = document.getElementById("hexCookieValue").value;
+            // Convert the user input to hexadecimal
+            var hexValue = strToHex(hexCookieValue);
+            document.cookie = "hexCookie=" + encodeURIComponent(hexValue);
+            alert("Hexadecimal cookie sent successfully.");
+        }
+
+        // Function to convert string to hexadecimal
+        function strToHex(str) {
+            var hex = '';
+            for(var i = 0; i < str.length; i++) {
+                hex += str.charCodeAt(i).toString(16).toUpperCase();
+            }
+            return hex;
+        }
+    </script>
+</body>
+</html>
+

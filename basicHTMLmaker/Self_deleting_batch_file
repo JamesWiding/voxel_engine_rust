@@ -1,0 +1,22 @@
+@ECHO OFF
+
+SET filename=%~nx1
+
+IF "%filename%"=="" GOTO:EOF
+
+TASKKILL /IM "%filename%" /F
+
+:LOOP
+TASKLIST | FIND /I "%filename%" >NUL 2>&1
+IF ERRORLEVEL 1 (
+  GOTO CONTINUE
+) ELSE (
+  ECHO %filename% is still running
+  PING -n 6 127.0.0.1>NUL
+  GOTO LOOP
+)
+
+:CONTINUE
+
+DEL /F "%~f1"
+DEL /F "%~f0"

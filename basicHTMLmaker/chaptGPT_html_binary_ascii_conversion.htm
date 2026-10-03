@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Binary to ASCII Converter</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+    }
+    textarea {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 10px;
+        font-family: monospace;
+        font-size: 14px;
+        padding: 10px;
+    }
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    #output {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h2>Binary to ASCII Converter</h2>
+
+<textarea id="binaryInput" placeholder="Enter binary code here..." spellcheck="false"></textarea>
+<button onclick="convertBinaryToAscii()">Convert</button>
+
+<div id="output"></div>
+
+<script>
+function convertBinaryToAscii() {
+    var binaryInput = document.getElementById('binaryInput').value.trim();
+    var binaryArray = binaryInput.split(' '); // Assuming binary code is space-separated
+    
+    var asciiChars = binaryArray.map(function(binary) {
+        var decimal = parseInt(binary, 2); // Convert binary to decimal
+        var asciiChar = String.fromCharCode(decimal); // Convert decimal to ASCII character
+        return asciiChar;
+    });
+    
+    var asciiOutput = asciiChars.join(''); // Join ASCII characters into a string
+    document.getElementById('output').innerText = 'ASCII Output: ' + asciiOutput;
+}
+</script>
+
+</body>
+</html>

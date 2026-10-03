@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+  <p id="timesVisited"></p>
+  <script type="text/javascript">
+    var timesVisited = parseInt(document.cookie.split("=")[1]);
+    if (isNaN(timesVisited)) timesVisited = 0;
+    timesVisited++;
+    document.cookie = "timesVisited=" + timesVisited;
+    document.getElementById("timesVisited").innerHTML = "You ran this snippet " + timesVisited + " times.";
+  </script>
+</body>
+
+</html>
+

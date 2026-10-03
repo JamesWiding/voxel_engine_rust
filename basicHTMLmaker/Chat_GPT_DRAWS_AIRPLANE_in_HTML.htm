@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Draw Airplane using Turtle Graphics</title>
+<style>
+    canvas {
+        border: 1px solid #000;
+    }
+</style>
+</head>
+<body>
+<canvas id="canvas" width="400" height="400"></canvas>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function drawAirplane() {
+    // Draw body
+    ctx.fillStyle = "#777";
+    ctx.fillRect(50, 150, 200, 50);
+
+    // Draw wings
+    ctx.beginPath();
+    ctx.moveTo(100, 150);
+    ctx.lineTo(50, 200);
+    ctx.lineTo(250, 200);
+    ctx.closePath();
+    ctx.fillStyle = "#777";
+    ctx.fill();
+
+    // Draw tail
+    ctx.fillStyle = "#777";
+    ctx.fillRect(250, 100, 50, 50);
+
+    // Draw windows
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(100, 170, 10, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(150, 170, 10, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(200, 170, 10, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+drawAirplane();
+</script>
+</body>
+</html>
+

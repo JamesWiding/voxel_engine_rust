@@ -1,0 +1,545 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+
+<head profile="http://gmpg.org/xfn/11">
+<title>Drawing with JavaScript</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="keywords" content="drawing, event handler, html, JavaScript, table, " />
+<meta name="description" content="This post shows how to implement simple JavaScript drawing. After page is loaded, JavaScript will generate HTML table and attach onMouseDown and onMouseOver event handlers to the each table cell. When user clicks the left mouse button and move mouse pointer over table cell, table cell will change background-color property." />
+<link rel="stylesheet" type="text/css" href="/wp-content/themes/abcok/style.css.jgz" />
+
+		
+<link rel="pingback" href="http://www.redips.net/xmlrpc.php" />
+<!-- Google Analytics -->
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-19666522-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+// nono trick
+function nono(theForm) {theForm.action="/my/wp-nono.php";return true;}
+	// addthis resize
+	function atresize () {
+		var width;
+		// Non-IE
+		if (typeof(window.innerWidth) === 'number') {
+			width  = window.innerWidth;
+		}
+		// IE 6+ in 'standards compliant mode'
+		else if (document.documentElement && (document.documentElement.clientWidth || document.documentElement.clientHeight)) {
+			width  = document.documentElement.clientWidth;
+		}
+		// IE 4 compatible
+		else if (document.body && (document.body.clientWidth || document.body.clientHeight)) {
+			width  = document.body.clientWidth;
+		}
+		// if 
+		if (width < 1150) {
+			document.getElementById('atsocialX').style.display = 'block';
+			document.getElementById('atsocialY').style.display = 'none';
+		}
+		else {
+			document.getElementById('atsocialX').style.display = 'none';
+			document.getElementById('atsocialY').style.display = 'block';
+		}
+	}
+	if (window.addEventListener) {
+		window.addEventListener('load', atresize, false);
+		window.addEventListener('resize', atresize, false);
+	}
+	else if (window.attachEvent) {
+		window.attachEvent('onload', atresize);
+		window.attachEvent('onresize', atresize);
+	}
+</script>
+<link rel="alternate" type="application/rss+xml" title="Redips spideR Net &raquo; Feed" href="http://www.redips.net/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Redips spideR Net &raquo; Comments Feed" href="http://www.redips.net/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Redips spideR Net &raquo; Drawing with JavaScript Comments Feed" href="http://www.redips.net/javascript/drawing/feed/" />
+<script type='text/javascript' src='http://www.redips.net/wp-includes/js/l10n.js?ver=20101110'></script>
+<script type='text/javascript' src='http://www.redips.net/wp-includes/js/comment-reply.js?ver=20090102'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.redips.net/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.redips.net/wp-includes/wlwmanifest.xml" /> 
+<link rel='index' title='Redips spideR Net' href='http://www.redips.net/' />
+<link rel='start' title='Transparent PNG image' href='http://www.redips.net/web/transparent-png-image/' />
+<link rel='prev' title='Week list for the current date in PHP' href='http://www.redips.net/php/week-list-current-date/' />
+<link rel='next' title='Adding table rows and columns in JavaScript' href='http://www.redips.net/javascript/adding-table-rows-and-columns/' />
+
+<link rel='canonical' href='http://www.redips.net/javascript/drawing/' />
+<link rel='shortlink' href='http://www.redips.net/?p=65' />
+<link href="http://www.redips.net/wp-content/plugins/syntaxhighlighter_redips/styles/shCore.css.jgz" type="text/css" rel="stylesheet"/><script type="text/javascript" src="http://www.redips.net/wp-content/plugins/syntaxhighlighter_redips/scripts/shCore.js.jgz"></script>
+<script type="text/javascript" src="http://www.redips.net/wp-content/plugins/syntaxhighlighter_redips/scripts/shBrushJScript.js.jgz"></script>
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+</head>
+
+<body class="single single-post postid-65 single-format-standard">
+<div id="banner">
+	<div id="branding-container">
+		<!-- title-->
+		<div id="branding">
+			<div id="blog-title"><span><a href="http://www.redips.net/" title="Redips spideR Net" rel="home">Redips spideR Net</a></span></div>
+			<div id="blog-description">Techniques and Web Technologies</div>						
+		</div>
+		<!-- logo -->
+		<div id="div_logo">
+			<a href="/"><img src="/my/img/spider1.png" id="logo_img" width="60" height="30" alt="Spider" title="Redips Home" border="0" onmousedown="if (event.preventDefault) event.preventDefault()" style="z-index:998;"/></a>		</div>
+		<!-- search div -->
+		<div id="div_search">
+			<!-- twitter & RSS -->
+			<div id="surheader">	
+									<img style="vertical-align:-3px;" alt="RSS" src="http://www.redips.net/wp-content/themes/abcok/images/twitter.gif" height="16" width="16" /> <a href="http://twitter.com/dbunic" target="_blank">Twitter</a> &nbsp;&nbsp;
+								<img style="vertical-align:-3px;" alt="RSS" src="http://www.redips.net/wp-content/themes/abcok/images/feed-icon-16x16.gif" height="16" width="16" /> <a href="http://www.redips.net/feed/">Entries RSS</a> | <a href="http://www.redips.net/comments/feed/">Comments RSS</a>
+			</div>
+			<!-- google search form -->
+			<form action="http://www.redips.net/google-search/" id="cse-search-box">
+			  <div>
+			    <input type="hidden" name="cx" value="partner-pub-8812728011618069:2y01z05vrz7" />
+			    <input type="hidden" name="cof" value="FORID:11" />
+			    <input type="hidden" name="ie" value="UTF-8" />
+			    <input type="text" name="q" size="16" />
+			    <input type="submit" name="sa" value="Search" />
+			  </div>
+			</form>
+			<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&amp;lang=en"></script>
+		</div>
+	</div><!-- #branding-container -->
+</div>
+<div id="wrapper" class="hfeed">
+	<div id="header">
+		<div id="masthead">
+			<div id="access" role="navigation">
+								<div class="skip-link screen-reader-text"><a href="#content" title="Skip to content">Skip to content</a></div>
+								<div class="menu"><ul><li class="page_item page-item-607"><a href="http://www.redips.net/" title="Home">Home</a></li><li class="page_item page-item-2"><a href="http://www.redips.net/about/" title="About">About</a></li><li class="page_item page-item-787"><a href="http://www.redips.net/video/" title="Video">Video</a></li><li class="page_item page-item-448"><a href="http://www.redips.net/download/" title="Download">Download</a></li><li class="page_item page-item-777"><a href="http://www.redips.net/github/" title="GitHub">GitHub</a></li><li class="page_item page-item-10"><a href="http://www.redips.net/sitemap/" title="Sitemap">Sitemap</a></li><li class="page_item page-item-74"><a href="http://www.redips.net/license/" title="License">License</a></li><li class="page_item page-item-852"><a href="http://www.redips.net/support-this-site/" title="Support this site">Support this site</a></li></ul></div>
+			</div><!-- #access -->
+		</div><!-- #masthead -->
+	</div><!-- #header -->
+	<div id="main">
+
+<div id="container">
+	<div class="googleads">
+<script type="text/javascript"><!--
+google_ad_client = "pub-8812728011618069";
+/* 728x90, created 7/20/09 */
+google_ad_slot = "6786980522";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+</div>	<div id="content">
+		
+		<div id="post-65" class="post-65 post type-post status-publish format-standard hentry category-javascript tag-drawing tag-event-handler tag-html tag-javascript tag-table">
+			<h1 class="entry-title">Drawing with JavaScript</h1>
+			<div class="entry-meta">
+				<span class="cat-links"><a href="http://www.redips.net/category/javascript/" title="View all posts in JavaScript" rel="category tag">JavaScript</a></span>
+																
+            </div>
+
+			<!-- AddThis horizontal -->
+			<div id="atsocialX" class="addthis_toolbox addthis_default_style">
+				<a class="addthis_button_google_plusone"></a>
+				<a class="addthis_button_facebook"></a>
+				<a class="addthis_button_twitter"></a>
+				<a class="addthis_button_google"></a>
+				<a class="addthis_button_delicious"></a>
+				<a class="addthis_button_digg"></a>
+				<a class="addthis_button_email"></a>
+				<a class="addthis_button_compact"></a>
+				<a class="addthis_button_facebook_like" fb:like:height="25" fb:like:width="115" style="margin-left:15px"></a>
+			</div>
+
+			<div class="entry-content">
+				<!-- AddThis vertical -->
+				<div id="atsocialY" class="addthis_toolbox atfixed addthis_32x32_style">
+					<a class="addthis_button_google_plusone" g:plusone:size="tall" style="margin-left:2px"></a></a>
+					<a class="addthis_button_facebook_like" fb:like:layout="box_count" style="margin-left:3px"></a>
+					<a class="addthis_button_tweet" tw:count="vertical"></a>
+					<a class="addthis_button_more" style="height:35px;margin-left:10px"><img src="/my/img/addthis32.png" alt="More..."/></a>
+				</div>
+				<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=dbunic"></script>
+				<p>This post shows how to implement simple JavaScript drawing. After page is loaded, JavaScript will generate HTML table and attach onMouseDown and onMouseOver event handlers to the each table cell. When user clicks the left mouse button and move mouse pointer over table cell, table cell will change <em>background-color</em> property to the selected color. Please try ...</p>
+<style>
+div#drawing_table table{border:2px solid red;border-collapse:collapse;}
+div#drawing_table table td{width:4px;height:4px;border:1px solid #fafafa;}
+div#colors {margin-top:5px;}
+div#colors td{width:20px;height:20px;border:1px;cursor:pointer;}
+</style>
+<div id="drawing_table"></div>
+<div id="colors">
+<table>
+<tr>
+<td style="background-color: black"   onclick="set_color(this)"></td>
+<td style="background-color: gray"    onclick="set_color(this)"></td>
+<td style="background-color: silver"  onclick="set_color(this)"></td>
+<td style="background-color: white; border: 1px solid #ddd;"   onclick="set_color(this)">&nbsp;</td>
+<td style="background-color: red"     onclick="set_color(this)"></td>
+<td style="background-color: purple"  onclick="set_color(this)"></td>
+<td style="background-color: fuchsia" onclick="set_color(this)"></td>
+<td style="background-color: green"   onclick="set_color(this)"></td>
+<td style="background-color: lime"    onclick="set_color(this)"></td>
+<td style="background-color: olive"   onclick="set_color(this)"></td>
+<td style="background-color: yellow"  onclick="set_color(this)"></td>
+<td style="background-color: orange"  onclick="set_color(this)"></td>
+<td style="background-color: blue"    onclick="set_color(this)"></td>
+<td style="background-color: navy"    onclick="set_color(this)"></td>
+<td style="background-color: teal"    onclick="set_color(this)"></td>
+<td style="background-color: aqua"    onclick="set_color(this)"></td>
+</tr>
+</table>
+</div>
+<p>Here you can see complete JavaScript source code. If you cut out comments source will be only 40 lines long.</p>
+<pre class="brush: js">
+var color   = 'red'; // default color
+var columns = 77;    // number of colums (X)
+var rows    = 50;    // number of rows (Y)
+var mouse   = 0;     // pressed mouse button
+
+// register onLoad event with anonymous function
+window.onload = function (){
+	table_create(); // create HTML table
+	table_events(); // attach event on table cells
+	// disable drag event for IE
+	document.body.ondragstart = function(e){return false}
+	// attach event handlers for onMouseDown and onMouseUp on drawing_table div element
+	document.getElementById('drawing_table').onmousedown = mousedown;
+	document.getElementById('drawing_table').onmouseup   = function(e){mouse = 0}
+}
+
+// onMouseDown handler (attached to drawing_table div and td elements)
+function mousedown(e){
+	// define event
+	var evt = e || window.event;
+	// needed for FF to disable dragging
+	if (evt.preventDefault) e.preventDefault();
+	// set pressed mouse button
+	if (evt.which) mouse = evt.which;
+	else           mouse = evt.button;
+	// colorize pixel on mousedown event for TD element
+	if (this.tagName == 'TD' &amp;&amp; mouse == 1) this.style.backgroundColor = color;
+}
+
+// create table HTML and attach to the div container
+function table_create(){
+	var tbl = ''; // initialize table string
+	// open loops to create table rows and table cells
+	for (var i=0; i&lt;rows; i++){
+		tbl = tbl + '&lt;tr&gt;';
+		for (var j=0; j&lt;columns; j++)	tbl = tbl + '&lt;td&gt;&lt;/td&gt;';
+		tbl = tbl + '&lt;/tr&gt;\n';
+	}
+	// get reference to the drawing table div and attach created table
+	var div = document.getElementById('drawing_table');
+	div.innerHTML = '&lt;table cellspacing="0" cellpadding="0"&gt;' + tbl + '&lt;/table&gt;';
+}
+
+// add events to table cells
+function table_events(){
+	// collect table cells from the drawing_table div element
+	var td = document.getElementById('drawing_table').getElementsByTagName('td');
+	// attach onMouseDown and onMouseOver event for collected table cells
+	for (var i=0; i&lt;td.length; i++){
+		td[i].onmousedown = mousedown;
+		// colorize table cell if left mouse button is pressed
+		td[i].onmouseover = function (e){if (mouse == 1) this.style.backgroundColor = color}
+	}
+}
+
+// set color (input parameter is the reference of the colored table cell)
+function set_color(obj){
+	color = obj.style.backgroundColor;
+	var tbl = document.getElementById('drawing_table').firstChild;
+	tbl.style.borderColor = color;
+}
+</pre>
+<p>Example is pretty useless and I'm not sure you will use it for some serious applications, but it's a good demonstration of used JavaScript techniques and some points to note:</p>
+<p><b>1. Border conflict resolution</b><br />
+If border styles differ only in color, then a style set on a cell wins over one on a row, which wins over a row group, column, column group and, lastly, table.</p>
+<p>Means, I have to set 2px border instead of 1px for table border because FF didn'tt show table border. OK, than I removed <em>border-collapse:collapse</em> and FF displayed border, but unfortunately that "disturbed" IE and table cell borders disappeared in IE. Finally, when I set table border to 2px (which is different to 1px of table cell border), both browsers displayed table border and table cell border.</p>
+<p>If you want to read more - <a href="http://www.w3.org/TR/CSS21/tables.html#border-conflict-resolution" title="Border conflict resolution">www.w3.org/TR/CSS21/tables.html#border-conflict-resolution</a></p>
+<p><b>2. table.innerHTML is read-only in IE6</b><br />
+The property is read/write for all objects except the following, for which it is read-only: COL, COLGROUP, FRAMESET, HEAD, HTML, STYLE, TABLE, TBODY, TFOOT, THEAD, TITLE, TR. The property has no default value.</p>
+<p>So I made a workaround and generated complete HTML table instead to set table.innerHTML property. Please see table_create() function.</p>
+<p>If you want to read more - <a href="http://msdn.microsoft.com/en-us/library/ms533897(VS.85).aspx" title="MSDN: innerHTML Property">msdn.microsoft.com/en-us/library/ms533897(VS.85).aspx</a></p>
+<p><b>3. How to disable drag event</b><br />
+I have to disable drag event for IE and FF. In IE was enough to return false in body.ondragstart, while in FF I should preventDefault() method. preventDefault cancels the event (if it is cancelable), without stopping further propagation of the event.</p>
+<p><b>4. Bypass wpautop for &lt;table&gt;, &lt;tr&gt; and &lt;td&gt; tags</b><br />
+This JavaScript example is saved as WordPress post. Nothing strange, but when post comes from the database, <em>wpautop</em> function filters the content and puts newline after &lt;table&gt;, &lt;tr&gt; and &lt;td&gt;. This feature breaks JavaScript code - please see table_create() function. The solution was to write tags in upper case because preg_replace in formatting.php searches for tags in lower case.<br />
+ <img src='http://www.redips.net/wp-includes/images/smilies/icon_wink.gif' alt=';)' class='wp-smiley' /> </p>
+<p><script type="text/javascript">var color   = 'red';
+var color='red';var columns=77;var rows=50;var mouse=0;window.onload=function(){table_create();table_events();document.body.ondragstart=function(e){return false}
+document.getElementById('drawing_table').onmousedown=mousedown;document.getElementById('drawing_table').onmouseup=function(e){mouse=0}}
+function mousedown(e){var evt=e||window.event;if(evt.preventDefault)e.preventDefault();if(evt.which)mouse=evt.which;else mouse=evt.button;if(this.tagName=='TD'&&mouse==1)this.style.backgroundColor=color;}
+function table_create(){var tbl='';for(var i=0;i<rows;i++){tbl=tbl+'<TR>';for(var j=0;j
+<columns;j++)tbl=tbl+'<TD></TD>';tbl=tbl+'</TR>\n';}
+var div=document.getElementById('drawing_table');div.innerHTML='<TABLE cellspacing="0" cellpadding="0">'+tbl+'</TABLE>';}
+function table_events(){var td=document.getElementById('drawing_table').getElementsByTagName('td');for(var i=0;i
+<td.length;i++){td[i].onmousedown=mousedown;td[i].onmouseover=function(e){if(mouse==1)this.style.backgroundColor=color}}}
+function set_color(obj){color=obj.style.backgroundColor;var tbl=document.getElementById('drawing_table').firstChild;tbl.style.borderColor=color;}
+</script>
+				            </div><!-- .entry-content -->
+										
+			<div class="entry-utility">
+				This entry was posted on April 30, 2009 and is filed under <a href="http://www.redips.net/category/javascript/" title="View all posts in JavaScript" rel="category tag">JavaScript</a>			</div><!-- .entry-utility -->
+
+		</div><!-- #post-65 -->  
+
+		<!-- related posts -->
+				<h3>Related posts</h3>
+		<ul class="related-posts">
+		<li><a title="Shift table content" href="/javascript/shift-table-content/">Shift table content</a></li>
+<li><a title="Adding table rows and columns in JavaScript" href="/javascript/adding-table-rows-and-columns/">Adding table rows and columns in JavaScript</a></li>
+<li><a title="JavaScript drag and drop plus content shift" href="/javascript/drag-and-drop-content-shift/">JavaScript drag and drop plus content shift</a></li>
+<li><a title="Drag and drop table content plus animation" href="/javascript/drag-and-drop-table-content-animation/">Drag and drop table content plus animation</a></li>
+<li><a title="REDIPS.drag documentation" href="/javascript/redips-drag-documentation/">REDIPS.drag documentation</a></li>
+		</ul>
+		
+					<div id="comments">
+
+
+			<h3 id="comments-title">7 Responses to <em>Drawing with JavaScript</em></h3>
+
+
+			<ol class="commentlist">
+					<li class="comment even thread-even depth-1" id="li-comment-183">
+		<div id="comment-183">
+		<div class="comment-author vcard">
+			<img alt='' src='http://0.gravatar.com/avatar/819a849f726745f31bd03684f3db1b32?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' />			<cite class="fn"><a href='http://www.udjuni.com' rel='external nofollow' class='url'>Simon</a></cite> <span class="says">says:</span>		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://www.redips.net/javascript/drawing/comment-page-1/#comment-183">
+			06.05.2009. at 06:17</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Very good post here, If I may ask how such a script can be used. Do you call it from a PHP script or do you simply put this code in an HTML/PHP script?</p>
+<p>I am trying to create something close to a whiteboard, but I am not having any luck in coding it; so some response will be appreciated.</p>
+</div>
+
+		<div class="reply">
+					</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+	<li class="comment byuser comment-author-dbunic bypostauthor odd alt thread-odd thread-alt depth-1" id="li-comment-185">
+		<div id="comment-185">
+		<div class="comment-author vcard">
+			<img alt='' src='http://0.gravatar.com/avatar/e8a409e856714a1e7eb73fa29f58947c?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' />			<cite class="fn"><a href='http://www.redips.net' rel='external nofollow' class='url'>dbunic</a></cite> <span class="says">says:</span>		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://www.redips.net/javascript/drawing/comment-page-1/#comment-185">
+			06.05.2009. at 20:44</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Simon,<br />
+this code is independent from any kind of Web platform. And as you said, you can simply put this few JavaScript lines to the HTML page. Just click to the "view plain" and copy source code to your file. Please, don't forget to create DIV tag with id="drawing_table" where <em>create_table()</em> function should generate HTML table tags. If you open HTML source of this post, search for the keyword "drawing_table" and you will see styles and needed HTML code.</p>
+</div>
+
+		<div class="reply">
+					</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+	<li class="comment even thread-even depth-1" id="li-comment-1727">
+		<div id="comment-1727">
+		<div class="comment-author vcard">
+			<img alt='' src='http://1.gravatar.com/avatar/ffae0d4ca0f902f5a2926d20938e12b9?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' />			<cite class="fn"><a href='http://trustedcash.blogspot.com/' rel='external nofollow' class='url'>jaydeep</a></cite> <span class="says">says:</span>		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://www.redips.net/javascript/drawing/comment-page-1/#comment-1727">
+			23.01.2010. at 20:06</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>It's indeed a very good post...! But I'm looking for something that is more efficient than this. I'm looking for the help about drawing charts and graphs in the browser from the data in the database.</p>
+</div>
+
+		<div class="reply">
+					</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-2167">
+		<div id="comment-2167">
+		<div class="comment-author vcard">
+			<img alt='' src='http://1.gravatar.com/avatar/d1b375227ceddfceda128303270f5341?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' />			<cite class="fn">Lenny</cite> <span class="says">says:</span>		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://www.redips.net/javascript/drawing/comment-page-1/#comment-2167">
+			15.07.2010. at 03:42</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Dbunic,<br />
+How would you go about saving an image from this black-board to a database or sending it by e-mail?<br />
+It’s a very nice script, by the way.<br />
+Thanks.</p>
+</div>
+
+		<div class="reply">
+					</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+	<li class="comment byuser comment-author-dbunic bypostauthor even thread-even depth-1" id="li-comment-2168">
+		<div id="comment-2168">
+		<div class="comment-author vcard">
+			<img alt='' src='http://0.gravatar.com/avatar/e8a409e856714a1e7eb73fa29f58947c?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' />			<cite class="fn"><a href='http://www.redips.net' rel='external nofollow' class='url'>dbunic</a></cite> <span class="says">says:</span>		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://www.redips.net/javascript/drawing/comment-page-1/#comment-2168">
+			15.07.2010. at 10:37</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>@Lenny - Drawn image is actually HTML, so I suppose that saving innerHTML of TABLE node should not be a problem. The same is with sending it in e-mail. <img src='http://www.redips.net/wp-includes/images/smilies/icon_wink.gif' alt=';)' class='wp-smiley' /> </p>
+</div>
+
+		<div class="reply">
+					</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-4331">
+		<div id="comment-4331">
+		<div class="comment-author vcard">
+			<img alt='' src='http://0.gravatar.com/avatar/24b9351dbdc713a954cca8b09637495a?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' />			<cite class="fn">Vasim Padhiyar</cite> <span class="says">says:</span>		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://www.redips.net/javascript/drawing/comment-page-1/#comment-4331">
+			12.08.2011. at 11:56</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>nice script. can we create image from this drawing board and save that image ?</p>
+</div>
+
+		<div class="reply">
+					</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+	<li class="comment byuser comment-author-dbunic bypostauthor even thread-even depth-1" id="li-comment-4342">
+		<div id="comment-4342">
+		<div class="comment-author vcard">
+			<img alt='' src='http://0.gravatar.com/avatar/e8a409e856714a1e7eb73fa29f58947c?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' />			<cite class="fn">dbunic</cite> <span class="says">says:</span>		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://www.redips.net/javascript/drawing/comment-page-1/#comment-4342">
+			16.08.2011. at 12:09</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>@Vasim Padhiyar - This script is only for demo. My intention was to show how to use table for drawing (attach onmouseover event handler to table cells and to change selected color when mouse pointer is over cell). On the other hand, now in HTML5 era, drawing in browsers is much easier using canvas element and canvas element has ready method to save drawn images - <strong>toDataURL()</strong>. Here is answer <a href="http://stackoverflow.com/questions/2544260/how-to-save-html5-canvas" title="stackoverflow: How to save HTML5 canvas" rel="nofollow">how to save HTML5 canvas</a>.</p>
+</div>
+
+		<div class="reply">
+					</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+			</ol>
+
+
+
+								<div id="respond">
+				<h3 id="reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/javascript/drawing/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://www.redips.net/wp-comments-post.php" method="post" id="commentform" onsubmit="return nono(this);">
+																			<p class="comment-notes">Your email address will not be published. Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name</label> <span class="required">*</span><input id="author" name="author" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-email"><label for="email">Email</label> <span class="required">*</span><input id="email" name="email" type="text" value="" size="30" aria-required='true' /></p>
+<p class="comment-form-url"><label for="url">Website</label><input id="url" name="url" type="text" value="" size="30" /></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<strong>Please Note:</strong> All comments will be moderated!						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Post Comment" />
+							<input type='hidden' name='comment_post_ID' value='65' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="237d7d9396" /></p>					</form>
+							</div><!-- #respond -->
+						
+</div><!-- #comments -->
+		
+		
+	</div><!-- #content -->  
+</div><!-- #container -->
+
+		<div id="primary" class="widget-area" role="complementary">
+			<ul class="xoxo">
+
+<li id="categories-2" class="widget-container widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+	<li class="cat-item cat-item-28"><a href="http://www.redips.net/category/apache/" title="View all posts filed under Apache">Apache</a> (3)
+</li>
+	<li class="cat-item cat-item-45"><a href="http://www.redips.net/category/firefox/" title="View all posts filed under FireFox">FireFox</a> (3)
+</li>
+	<li class="cat-item cat-item-7"><a href="http://www.redips.net/category/javascript/" title="View all posts filed under JavaScript">JavaScript</a> (30)
+<ul class='children'>
+	<li class="cat-item cat-item-220"><a href="http://www.redips.net/category/javascript/drag-and-drop/" title="View all posts filed under Drag and Drop">Drag and Drop</a> (9)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-23"><a href="http://www.redips.net/category/linux/" title="View all posts filed under Linux">Linux</a> (21)
+<ul class='children'>
+	<li class="cat-item cat-item-182"><a href="http://www.redips.net/category/linux/gnome/" title="View all posts filed under GNOME">GNOME</a> (3)
+</li>
+</ul>
+</li>
+	<li class="cat-item cat-item-38"><a href="http://www.redips.net/category/mysql/" title="View all posts filed under MySQL">MySQL</a> (4)
+</li>
+	<li class="cat-item cat-item-6"><a href="http://www.redips.net/category/php/" title="View all posts filed under PHP">PHP</a> (12)
+</li>
+	<li class="cat-item cat-item-3"><a href="http://www.redips.net/category/web/" title="View all posts filed under Web">Web</a> (2)
+</li>
+	<li class="cat-item cat-item-10"><a href="http://www.redips.net/category/wordpress/" title="View all posts filed under WordPress">WordPress</a> (9)
+</li>
+		</ul>
+</li><li id="most_commented_widget-3" class="widget-container widget_most_commented_widget"><h3 class="widget-title">Most commented</h3><ul><li><a href="http://www.redips.net/javascript/drag-and-drop-table-content/" title="Drag and Drop table content with JavaScript">Drag and Drop table content with JavaScript</a> (622)</li><li><a href="http://www.redips.net/javascript/drag-and-drop-table-row/" title="Drag and drop table rows with JavaScript">Drag and drop table rows with JavaScript</a> (66)</li><li><a href="http://www.redips.net/javascript/drag-and-drop-example-3/" title="JavaScript Drag and Drop example 3">JavaScript Drag and Drop example 3</a> (61)</li><li><a href="http://www.redips.net/javascript/ajax-progress-bar/" title="AJAX progress bar">AJAX progress bar</a> (46)</li><li><a href="http://www.redips.net/javascript/dialog-box/" title="JavaScript dialog box">JavaScript dialog box</a> (43)</li><li><a href="http://www.redips.net/javascript/date-validation/" title="JavaScript date validation">JavaScript date validation</a> (34)</li><li><a href="http://www.redips.net/linux/yum-install-mplayer/" title="Yum install mplayer in Fedora">Yum install mplayer in Fedora</a> (21)</li></ul></li>		<li id="recent-posts-2" class="widget-container widget_recent_entries">		<h3 class="widget-title">Recent Posts</h3>		<ul>
+				<li><a href="http://www.redips.net/javascript/drag-and-drop-content-shift/" title="JavaScript drag and drop plus content shift">JavaScript drag and drop plus content shift</a></li>
+				<li><a href="http://www.redips.net/javascript/console-log-ie8/" title="console.log in IE8">console.log in IE8</a></li>
+				<li><a href="http://www.redips.net/javascript/find-parent-node/" title="Find parent node in DOM">Find parent node in DOM</a></li>
+				<li><a href="http://www.redips.net/javascript/drag-and-drop-table-content-animation/" title="Drag and drop table content plus animation">Drag and drop table content plus animation</a></li>
+				<li><a href="http://www.redips.net/javascript/redips-drag-documentation/" title="REDIPS.drag documentation">REDIPS.drag documentation</a></li>
+				</ul>
+		</li><li id="recent-comments-2" class="widget-container widget_recent_comments"><h3 class="widget-title">Recent Comments</h3><ul id="recentcomments"><li class="recentcomments">Lukas on <a href="http://www.redips.net/javascript/drag-and-drop-table-content/comment-page-31/#comment-4560">Drag and Drop table content with JavaScript</a></li><li class="recentcomments">waseem on <a href="http://www.redips.net/php/week-list-current-date/comment-page-1/#comment-4557">Week list for the current date in PHP</a></li><li class="recentcomments">oded on <a href="http://www.redips.net/javascript/drag-and-drop-table-content/comment-page-31/#comment-4556">Drag and Drop table content with JavaScript</a></li><li class="recentcomments">zhaowx on <a href="http://www.redips.net/javascript/drag-and-drop-table-content/comment-page-31/#comment-4555">Drag and Drop table content with JavaScript</a></li><li class="recentcomments">dbunic on <a href="http://www.redips.net/javascript/dialog-box/comment-page-3/#comment-4554">JavaScript dialog box</a></li></ul></li><li id="text-3" class="widget-container widget_text">			<div class="textwidget"><div id="twitter_box">
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script>
+new TWTR.Widget({
+  version: 2,
+  type: 'profile',
+  rpp: 3,
+  interval: 6000,
+  width: 225,
+  height: 380,
+  theme: {
+    shell: {
+      background: '#E1E9EE',
+      color: '#3b3b3b'
+    },
+    tweets: {
+      background: '#ffffff',
+      color: '#222222',
+      links: '#2970A6'
+    }
+  },
+  features: {
+    scrollbar: false,
+    loop: false,
+    live: false,
+    hashtags: true,
+    timestamp: true,
+    avatars: false,
+    behavior: 'all'
+  }
+}).render().setUser('dbunic').start();
+</script>
+</div></div>
+		</li>			</ul>
+		</div><!-- #primary .widget-area -->
+
+        </div><!-- #main -->
+		<div id="footer" role="contentinfo">
+		<div id="colophon">
+  
+        
+					<div id="footerinfo">
+                
+				
+				<div id="copyright">
+					Copyright &copy; 2008-2011				</div>
+				<div id="themeinfo">
+					All code from <a href="/" title="www.redips.net">www.redips.net</a> is provided free of charge under a liberal <a href="/license/" title="BSD license">BSD license</a>.
+				</div>
+			</div>
+		</div><!--#colophon-->
+        </div><!-- #footer -->
+        
+</div><!-- #wrapper --> 
+
+<script type="text/javascript">
+SyntaxHighlighter.defaults['toolbar'] = false;
+SyntaxHighlighter.defaults['gutter'] = false;
+SyntaxHighlighter.all();
+</script>
+
+</body>
+</html><!-- hyper cache: 96c446b85feb6b054d67073127a1435d 11-10-19 07:25:07 -->

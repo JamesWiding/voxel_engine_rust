@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Chat Bot</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        width: 80%;
+        margin: 20px auto;
+    }
+    .chat-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        max-height: 300px;
+        overflow-y: scroll;
+    }
+    .user-msg {
+        text-align: right;
+        color: blue;
+    }
+    .bot-msg {
+        text-align: left;
+        color: green;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Simple Chat Bot</h1>
+    <div class="chat-box" id="chatBox"></div>
+    <input type="text" id="userInput" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+// Define responses
+const responses = {
+    "hello": "Hello! How can I assist you?",
+    "how are you": "I'm just a simple chat bot, but thank you for asking!",
+    "bye": "Goodbye! Have a great day!",
+    // Add more responses as needed
+};
+
+// Function to send user message and get bot response
+function sendMessage() {
+    const userInput = document.getElementById("userInput").value.trim().toLowerCase();
+    const chatBox = document.getElementById("chatBox");
+
+    // Display user message
+    const userMsgElement = document.createElement("div");
+    userMsgElement.textContent = "You: " + userInput;
+    userMsgElement.classList.add("user-msg");
+    chatBox.appendChild(userMsgElement);
+
+    // Get bot response
+    let botResponse = "I'm sorry, I didn't understand that.";
+    if (responses[userInput]) {
+        botResponse = responses[userInput];
+    }
+
+    // Display bot response
+    const botMsgElement = document.createElement("div");
+    botMsgElement.textContent = "Bot: " + botResponse;
+    botMsgElement.classList.add("bot-msg");
+    chatBox.appendChild(botMsgElement);
+
+    // Scroll chat box to bottom
+    chatBox.scrollTop = chatBox.scrollHeight;
+    document.getElementById("userInput").value = ""; // Clear input field
+}
+</script>
+</body>
+</html>
+

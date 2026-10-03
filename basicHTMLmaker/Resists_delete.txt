@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory-Wipe Resilient Webpage</title>
+</head>
+<body>
+<h1>Memory-Wipe Resilient Webpage</h1>
+
+<!-- Input field to store data -->
+<label for="dataInput">Enter Data:</label>
+<input type="text" id="dataInput">
+<button onclick="saveData()">Save</button>
+
+<!-- Display stored data -->
+<div id="storedData"></div>
+
+<script>
+// Function to save data to local storage
+function saveData() {
+    var data = document.getElementById("dataInput").value;
+    localStorage.setItem("storedData", data);
+    displayStoredData();
+}
+
+// Function to display stored data
+function displayStoredData() {
+    var storedData = localStorage.getItem("storedData");
+    document.getElementById("storedData").textContent = "Stored Data: " + (storedData ? storedData : "None");
+}
+
+// Display stored data on page load
+displayStoredData();
+</script>
+</body>
+</html>
+
